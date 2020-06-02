@@ -30,11 +30,14 @@ const app = express();
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
-app.set("view engine", "handlebars");
+app.set("view engine", "hbs");
 app.use(methodOverride("_method"))
 
-app.engine('handlebars', handlebars({
+app.engine('hbs', handlebars({
     layoutsDir: __dirname + '/views/layouts',
+    extname: "hbs",
+    defaultLayout: 'chart',
+    partialsDir: __dirname + '/views/partials/'
     }))
 
 mongoose.connect(process.env.DATABASEURL, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false});
