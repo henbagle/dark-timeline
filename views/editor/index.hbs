@@ -1,0 +1,21 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+
+            <h1 class="my-3 text-center">Dark Timeline Editor</h1>
+
+            <div class="my-4">
+                <h3>Characters:</h3>
+                <table class="table">
+                    {{#each characters}}
+                        <tr><td><a href="/editor/character/{{this.id}}/edit">{{this.name}} ({{this.age}})</a></td></tr>
+                    {{/each}}
+                </table>
+            </div>
+
+            <a href="/editor/event/new" class="btn btn-primary">Create Event</a>
+            <a href="/editor/character/new" class="btn btn-primary">Create Character</a>
+
+        </div>
+    </div>
+</div>

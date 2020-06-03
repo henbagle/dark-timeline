@@ -7,7 +7,9 @@ const   express         = require("express"),
         dotEnv          = require("dotenv"),
         bodyParser      = require("body-parser"),
         methodOverride  = require("method-override"),
-        handlebars      = require("express-handlebars");
+        handlebars      = require("handlebars"),
+        eHandlebars     = require("express-handlebars"),
+        {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
 
 if (process.env.NODE_ENV !== 'production') {
 	dotEnv.config();
@@ -33,11 +35,14 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "hbs");
 app.use(methodOverride("_method"))
 
-app.engine('hbs', handlebars({
+app.engine('hbs', eHandlebars({
     layoutsDir: __dirname + '/views/layouts',
     extname: "hbs",
     defaultLayout: 'chart',
-    partialsDir: __dirname + '/views/partials/'
+    partialsDir: __dirname + '/views/partials/',
+    allowProtoMethodsByDefault: true,
+    allowProtoPropertiesByDefault: true,
+    handlebars: allowInsecurePrototypeAccess(handlebars)
     }))
 
 mongoose.connect(process.env.DATABASEURL, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false});

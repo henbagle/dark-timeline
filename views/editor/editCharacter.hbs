@@ -1,0 +1,93 @@
+<div class="container">
+    <div class="row">
+    <div class="col-md-8 mx-auto">
+        <h2 class="my-2 text-center">{{oldChar.name}}</h2>
+        <form action="/editor/character/{{_id}}?_method=PUT" method="post">
+            <div class="form-group">
+                <label for="name">Full Name:</label>
+                <input disabled type="text" class="form-control dt-input" name="char[name]" id="name" value="{{oldChar.name}}" required>
+
+                <label for="shortName">Short Name:</label>
+                <input disabled type="text" class="form-control dt-input" name="char[shortName]" id="shortName" value="{{oldChar.shortName}}">
+
+                <label for="spoilerName">Spoiler Name:</label>
+                <input disabled type="text" class="form-control dt-input" name="char[spoilerName]" id="spoilerName" value="{{oldChar.spoilerName}}">
+
+                <label for="age">Age:</label>
+                <input disabled type="text" class="form-control dt-input" name="char[age]" id="age" value="{{oldChar.age}}">
+                <div class="my-2">
+                    <label for="color">Line Color:</label>
+                    <input disabled type="color" name="char[color]" class="dt-input" id="color" value="{{oldChar.color}}">
+                </div>
+
+
+                <div class="form-check form-check-inline">
+                    <input disabled class="form-check-input dt-input" type="radio" name="char[line]" id="inline-radio-1" value="straight" {{checkLine 1 oldChar.line}}>
+                    <label for="inline-radio-1" class="form-check-label">Straight Line</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input disabled class="form-check-input dt-input" type="radio" name="char[line]" id="inline-radio-2" value="dashed" {{checkLine 2 oldChar.line}}>
+                    <label for="inline-radio-2" class="form-check-label">Dashed Line</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input disabled class="form-check-input dt-input" type="radio" name="char[line]" id="inline-radio-3" value="dashdot" {{checkLine 3 oldChar.line}}>
+                    <label for="inline-radio-3" class="form-check-label">Dashed/Dotted Line</label>
+                </div>
+
+                <div class="my-4">
+                    <h4 class="text-center">Events:</h4>
+
+
+                    {{#each oldChar.periods}}
+                    <table class="table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">{{pName @index}}
+                                        <span class="form-check form-check-inline float-right">
+                                            <input disabled type="hidden" value="{{hiddenI this.default}}" name="char[periods][{{@index}}][default]"><input disabled class="form-check mx-2 dt-input" onclick="togglePrevious(this)" type="checkbox" id="default-{{@index}}" {{#if this.default}}checked{{/if}}>
+                                            <label for="default-{{@index}}" class="form-check-label"> In Default View</label> 
+                                        </span></th>
+                                </tr>
+                            </thead>
+
+                            {{#each this.[@index].events}}
+                            <tr><td><a href="/editor/event/{{this.id}}">{{this.name}}</a></td></tr>
+                            {{/each}}
+
+                    </table>
+                    {{/each}}
+
+                </div>
+                
+                <button class="btn btn-primary" id="editC" type="button">Edit Character</button>
+                <button class="btn btn-success dt-1" type="submit" hidden>Submit</button>
+                <button type="button" class="btn btn-danger dt-1" hidden data-toggle="modal" data-target="#delModal">Delete</button>
+                <button type="button" class="btn btn-secondary dt-1" id="cancelC" hidden>Cancel</button>
+            </div>
+        </form>
+    </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="delModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete Character?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete this character?</p>
+      </div>
+      <div class="modal-footer">
+        <form action="/editor/character/{{_id}}?_method=DELETE" method="post"><button type="button" class="btn btn-danger" >Delete</button></form>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="/scripts/editCharacter.js"></script>

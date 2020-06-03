@@ -1,0 +1,58 @@
+<div class="container">
+    <div class="row">
+    <div class="col-md-8 mx-auto">
+        <h2 class="my-2 text-center">New Character</h2>
+        <form action="/editor/character" method="post">
+            <div class="form-group">
+                <label for="name">Full Name:</label>
+                <input type="text" class="form-control" placeholder="Jonas Kahnwald" name="char[name]" id="name" required>
+
+                <label for="shortName">Short Name:</label>
+                <input type="text" class="form-control" placeholder="Jonas" name="char[shortName]" id="shortName" value="">
+
+                <label for="spoilerName">Spoiler Name:</label>
+                <input type="text" class="form-control" placeholder="The Stranger" name="char[spoilerName]" id="spoilerName">
+
+                <label for="age">Age:</label>
+                <input type="text" class="form-control" placeholder="Adult" name="char[age]" id="age">
+                <div class="my-2">
+                    <label for="color">Line Color:</label>
+                    <input type="color" name="char[color]" id="color">
+                </div>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="char[line]" id="inline-radio-1" value="straight" checked>
+                    <label for="inline-radio-1" class="form-check-label">Straight Line</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="char[line]" id="inline-radio-2" value="dashed" >
+                    <label for="inline-radio-2" class="form-check-label">Dashed Line</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="char[line]" id="inline-radio-3" value="dashdot" >
+                    <label for="inline-radio-3" class="form-check-label">Dashed/Dotted Line</label>
+                </div>
+                <div class="my-4">
+                    <h4 class="text-center">Events:</h4>
+                    {{#each periods}}
+                    <table class="table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">{{this.name}}
+
+                                        <span class="form-check form-check-inline float-right">
+                                            <input type="hidden" value="0" name="char[periods][{{@index}}][default]"><input class="form-check mx-2" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value" id="default-{{@index}}">
+                                            <label for="default-{{@index}}" class="form-check-label"> In Default View</label> 
+                                        </span></th>
+                                </tr>
+                            </thead>
+                    </table>
+                    {{/each}}
+                </div>
+                
+                <button class="btn btn-success" type="submit">Submit Character</button>
+            </div>
+        </form>
+    </div>
+    </div>
+</div>

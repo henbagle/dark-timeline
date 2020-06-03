@@ -1,0 +1,21 @@
+const mongoose = require("mongoose");
+
+let characterSchema = new mongoose.Schema({
+    name: String,
+    shortName: String,
+    spoilerName: String,
+    age: String,
+
+    color: String,
+    line: String,
+
+    periods:[
+        {
+            default:Boolean,
+            events:[{type: mongoose.Schema.Types.ObjectId,
+				ref: "event"}]
+        }
+    ]
+})
+
+module.exports = mongoose.model("character", characterSchema);
