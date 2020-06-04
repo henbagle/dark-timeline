@@ -1,8 +1,29 @@
+<div class="modal" tabindex="-1" role="dialog" id="delModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete Character?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete this character?</p>
+      </div>
+      <div class="modal-footer">
+        <form action="/editor/character/{{oldChar._id}}?_method=DELETE" method="post"><button class="btn btn-danger" >Delete</button></form>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div class="container">
     <div class="row">
     <div class="col-md-8 mx-auto">
         <h2 class="my-2 text-center">{{oldChar.name}}</h2>
-        <form action="/editor/character/{{_id}}?_method=PUT" method="post">
+        <form action="/editor/character/{{oldChar._id}}?_method=PUT" method="post">
             <div class="form-group">
                 <label for="name">Full Name:</label>
                 <input disabled type="text" class="form-control dt-input" name="char[name]" id="name" value="{{oldChar.name}}" required>
@@ -44,7 +65,7 @@
                                 <tr>
                                     <th scope="col">{{pName @index}}
                                         <span class="form-check form-check-inline float-right">
-                                            <input disabled type="hidden" value="{{hiddenI this.default}}" name="char[periods][{{@index}}][default]"><input disabled class="form-check mx-2 dt-input" onclick="togglePrevious(this)" type="checkbox" id="default-{{@index}}" {{#if this.default}}checked{{/if}}>
+                                            <input disabled type="hidden" class="dt-input" value="{{hiddenI this.default}}" name="char[periods][{{@index}}][default]"><input disabled class="form-check mx-2 dt-input" onclick="togglePrevious(this)" type="checkbox" id="default-{{@index}}" {{#if this.default}}checked{{/if}}>
                                             <label for="default-{{@index}}" class="form-check-label"> In Default View</label> 
                                         </span></th>
                                 </tr>
@@ -68,26 +89,5 @@
     </div>
     </div>
 </div>
-
-<div class="modal" tabindex="-1" role="dialog" id="delModal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Delete Character?</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>Are you sure you want to delete this character?</p>
-      </div>
-      <div class="modal-footer">
-        <form action="/editor/character/{{_id}}?_method=DELETE" method="post"><button type="button" class="btn btn-danger" >Delete</button></form>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 
 <script src="/scripts/editCharacter.js"></script>

@@ -8,7 +8,7 @@ const   express = require("express"),
 let router = express.Router();
 
 
-// INDEX
+// EDITOR INDEX
 router.get("/editor", function(req, res){
     Character.find({}, function(err, results){
         if(err){
@@ -17,9 +17,36 @@ router.get("/editor", function(req, res){
         else{
             res.render("editor/index", {layout: "edit", characters: results})
         }
-    })
+    }).sort("name")
 })
 
+////////////////////
+// Character Routes
+////////////////////
+
+// CHARACTER - JSON INDEX
+router.get("/character", function(req, res){
+    Character.find({}, function(err, results){
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.json({chars:results, periods:darkHelper.periods});
+        }
+    }).populate("periods.entries").sort("name")
+})
+
+// CHARACTER - GET
+router.get("/character/:id", function(req, res){
+    Character.findOne({"_id":req.params.id}, function(err, dbChar){
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.json(dbChar);
+        }
+    }).populate("periods.entrys")
+})
 
 // CHARACTER - NEW
 router.get("/editor/character/new", function(req, res){
@@ -29,7 +56,7 @@ router.get("/editor/character/new", function(req, res){
 // CHARACTER - CREATE
 router.post("/editor/character", function(req, res){
     let newCharacter = req.body.char;
-    for(i=0; i<newCharacter.periods.length;i++){
+    for(let i=0; i<newCharacter.periods.length;i++){
         if(newCharacter.periods[i].default == 1){
             newCharacter.periods[i].default = true;
         }
@@ -37,7 +64,7 @@ router.post("/editor/character", function(req, res){
             newCharacter.periods[i].default = false;
         }
     }
-    Character.create(newCharacter, function(err, newObj){
+    Character.create(newCharacter, function(err){
         if(err){
             console.log(err);
         }
@@ -55,7 +82,7 @@ router.get("/editor/character/:id/edit", function(req, res){
         }
         else{
             res.render("editor/editCharacter", {layout:"edit", periods:darkHelper.periods, oldChar:dbChar, helpers:{
-                hiddenI: function(input){
+                hiddenI: function(input){      // returns the initial value for the hidden input tracking default checkbox changes
                     if(input){
                         return "1";
                     }
@@ -63,7 +90,7 @@ router.get("/editor/character/:id/edit", function(req, res){
                         return "0";
                     }
                 },
-                checkLine: function(w, text){
+                checkLine: function(w, text){ // Given an index and the value in db, returns whether or not this radial menu option should be checked
                     if(text == "straight" && w == 1){
                         return "checked";
                     }
@@ -74,7 +101,7 @@ router.get("/editor/character/:id/edit", function(req, res){
                         return "checked";
                     }
                 },
-                pName: function(input){
+                pName: function(input){     // Returns the period name at the index of the input
                     return darkHelper.periods[input].name
                 }
             }})
@@ -83,6 +110,45 @@ router.get("/editor/character/:id/edit", function(req, res){
 })
 
 // CHARACTER - PUT
+router.put("/editor/character/:id", function(req, res){
+    let newCharacter = req.body.char;
+    for(let i=0; i<newCharacter.periods.length;i++){
+        if(newCharacter.periods[i].default == 1){
+            newCharacter.periods[i].default = true;
+        }
+        else{
+            newCharacter.periods[i].default = false;
+        }
+    }
+    Character.findByIdAndUpdate(req.params.id, newCharacter, function(err){
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.redirect("/editor")
+        }
+    })
+})
 
-// CHARACTER - DELETE
+// CHARACTER - DELETE                                                           // Todo: Go through each linked event, deleting references to character, delete events if necessary
+router.delete("/editor/character/:id", function(req, res){
+    Character.deleteOne({"_id":req.params.id}, function(err){
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.redirect("/editor")
+        }
+    })
+})
+
+////////////////////
+// Event Routes
+////////////////////
+
+// EVENT - NEW
+router.get("/editor/event/new", function(req, res){
+    res.render("editor/newEvent", {layout: "edit", periods:darkHelper.periods})
+})
+
 module.exports = router;

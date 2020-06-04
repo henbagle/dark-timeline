@@ -20,8 +20,7 @@ if (process.env.NODE_ENV !== 'production') {
 //////////////////
 
 const   chartRouter     = require("./rCharts"),
-        editRouter      = require("./rEdit"),
-        darkHelper      = require("./helpers");
+        editRouter      = require("./rEdit")
 
 
 
