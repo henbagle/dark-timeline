@@ -71,8 +71,8 @@
                                 </tr>
                             </thead>
 
-                            {{#each this.[@index].events}}
-                            <tr><td><a href="/editor/event/{{this.id}}">{{this.name}}</a></td></tr>
+                            {{#each this.events}}
+                            <tr><td><a href="/editor/event/{{this.id}}/edit">{{this.name}}</a></td></tr>
                             {{/each}}
 
                     </table>
