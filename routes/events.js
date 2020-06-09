@@ -55,41 +55,41 @@ else{
 
     else{
         newEvent.characters.forEach((char) => {      // For each character this event belongs to
-        addEventToChar(char, dbCreate)
+        addEventToChar(char, dbCreate)               // Add the event to them
         })
 
-        res.json({ok:true})                              // return ok
+        res.json({ok:true})                          // return ok
     }
     });
 }
 });
 
-// EVENT - PUT                                                                      // TODO
+// EVENT - PUT                                          PROBLEM: Doesn't re-sort characters if only x's changed (none added).
 router.put('/editor/event/:id', (req, res) => {
-let editEvent = req.body.event;         // The edited event from React
-editEvent.characters = docsToId(editEvent.characters)
+let editEvent = req.body.event;                         // The edited event from React
+editEvent.characters = docsToId(editEvent.characters)   // Get rid o tha characters
 
 
-Event.findById(editEvent["_id"], (err, toEdit) => {
+Event.findById(editEvent["_id"], (err, toEdit) => {     // get the unedited version of this event
     if(err){
     console.log(err);
     }
     else{
 
-    editEvent.characters.forEach((char) => {     // Check for new characters
-        if(!toEdit.characters.includes(char)){ // if the old array doesn't include this element of the new one
-        addEventToChar(char, editEvent);
+    editEvent.characters.forEach((char) => {            // Checking for new characters
+        if(!toEdit.characters.includes(char)){          // if the old list of chars doesn't include this element of the new one
+        addEventToChar(char, editEvent);                // Add the event to that character
         }
     })
     
-    toEdit.characters.forEach((char) => {                 // Check for deleted characters
+    toEdit.characters.forEach((char) => {                // Check for deleted characters
         let oChar = char.toString();
-        if(!editEvent.characters.includes(oChar)){ // if the new array doesn't include an element from the old array
-        delEventFromChar(char, editEvent);
+        if(!editEvent.characters.includes(oChar)){       // if the new array doesn't include an element from the old array of chars
+        delEventFromChar(char, editEvent);               // remove this event from that char
         }
     })
 
-    Event.findByIdAndUpdate(editEvent["_id"], editEvent, (err) => {
+    Event.findByIdAndUpdate(editEvent["_id"], editEvent, (err) => { // update the event
         if(err){
         console.log(err);
         }
@@ -110,9 +110,9 @@ Event.findById(req.params.id, (err, deleted) => {
     }
     else{
     deleted.characters.forEach((char) => {             // find each character this event relates to
-        delEventFromChar(char, deleted);
+        delEventFromChar(char, deleted);               // delete the event from that charqacter
     })
-    Event.findByIdAndDelete(req.params.id, (err) => { // also delete the event
+    Event.findByIdAndDelete(req.params.id, (err) => {  // also delete the event
         if (err) {
         console.log(err);
         } else {

@@ -6,19 +6,7 @@ const Event = require('../models/Event');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  res.redirect('/season-1');
-});
-
-router.get('/summer-2019', (req, res) => {
-  res.render('s0', { layout: 'chart' });
-});
-
-router.get('/season-1', (req, res) => {
-  res.render('s1', { layout: 'chart' });
-});
-
-router.get('/season-2', (req, res) => {
-  res.render('s2', { layout: 'chart' });
+  res.render('timeline', { layout: 'chart' , periods: darkHelper.periods})
 });
 
 // TIMELINES - JSON of EVERYTHING
@@ -27,7 +15,7 @@ router.get('/timeline', (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      res.send({ characters: dbChar, periods: darkHelper.periods });
+      res.send({ characters: dbChar, period: darkHelper.periods[req.params.p] });
     }
   });
 });

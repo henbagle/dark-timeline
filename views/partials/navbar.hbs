@@ -5,9 +5,9 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <div class="navbar-nav mr-auto">
-            <a href="/summer-2019" class="nav-item nav-link">Summer 2019</a>
-            <a href="/season-1" class="nav-item nav-link">Season 1</a>
-            <a href="/season-2" class="nav-item nav-link">Season 2</a>
+          {{#each periods}}
+            <a href="/?p={{@index}}" class="nav-item nav-link">{{this.name}}</a>
+          {{/each}}
         </div>
         <div class="navbar-nav">
             <a href="/editor" class="nav-item nav-link">Edit Timeline</a>
