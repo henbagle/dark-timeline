@@ -19,8 +19,9 @@ if (process.env.NODE_ENV !== 'production') {
 // ROUTES
 // ////////////////
 
-const chartRouter = require('./rCharts');
-const editRouter = require('./rEdit');
+const chartRouter = require('./routes/charts');
+const characterRouter = require('./routes/characters');
+const eventRouter = require('./routes/events');
 
 
 // ////////////////
@@ -51,7 +52,8 @@ mongoose.connect(process.env.DATABASEURL,
 // ////////////////
 
 app.use(chartRouter);
-app.use(editRouter);
+app.use(characterRouter);
+app.use(eventRouter);
 
 
 // ////////////////

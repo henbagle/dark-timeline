@@ -1,5 +1,24 @@
-const period = 1;
+import { defaults } from 'react-chartjs-2';
+import merge from 'lodash.merge';
 
+merge(defaults, {
+  global: {
+    datasets: {
+      line: {
+        fill: "false",
+        steppedLine: 'after',
+        yAxisID: 'y-real',
+        xAxisID: 'x-linear',
+        steppedLine: 'after',
+      }
+    }
+  }
+})
+
+defaults.global.datasets.line.fill = "false";
+
+
+const period = 1;
 const ctx = document.getElementById('timelineChart').getContext('2d');
 
 fetch('/timeline').then((response) => response.json())

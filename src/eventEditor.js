@@ -1,3 +1,6 @@
+import React from "react";
+import ReactDOM from "react-dom";
+
 function SubmitButtons(props) {
   if (props.edit === false) {
     return (<div className="my-3"><button className="btn btn-success" type="button" onClick={props.onNew}>Submit Event</button></div>);
