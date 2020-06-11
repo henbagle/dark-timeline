@@ -13,6 +13,7 @@ router.get('/editor', (req, res) => {
     if (err) {
       console.log(err);
     } else {
+      results.sort(darkHelper.characterSort)
       res.render('editor/editorIndex', { layout: 'edit', characters: results });
     }
   }).sort('name');
@@ -35,6 +36,7 @@ router.get('/character/:id', (req, res) => {
     if (err) {
       console.log(err);
     } else {
+      dbChar.sort(darkHelper.characterSort)
       res.json(dbChar);
     }
   }).populate('periods.entries');
@@ -70,6 +72,10 @@ router.get('/editor/character/:id/edit', (req, res) => {
     if (err) {
       console.log(err);
     } else {
+      for(let i=0; i<dbChar.periods.length; i++){
+        dbChar.periods[i].events.sort((a, b) => a.x - b.x)
+      }
+
       res.render('editor/editCharacter', {
         layout: 'edit',
         periods: darkHelper.periods,
@@ -106,20 +112,25 @@ router.get('/editor/character/:id/edit', (req, res) => {
 // CHARACTER - PUT
 router.put('/editor/character/:id', (req, res) => {
   const newCharacter = req.body.char;
-  for (let i = 0; i < newCharacter.periods.length; i++) {
-    if (newCharacter.periods[i].default == 1) {
-      newCharacter.periods[i].default = true;
-    } else {
-      newCharacter.periods[i].default = false;
+  Character.findById(req.params.id).populate("periods.events").exec((err, old) => {
+    for (let i = 0; i < newCharacter.periods.length; i++) {
+      if (newCharacter.periods[i].default == 1) {
+        newCharacter.periods[i].default = true;
+      } else {
+        newCharacter.periods[i].default = false;
+      }
+      newCharacter.periods[i].events = old.periods[i].events
     }
-  }
-  Character.findByIdAndUpdate(req.params.id, newCharacter, (err) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.redirect('/editor');
-    }
-  });
+
+    Character.findByIdAndUpdate(req.params.id, newCharacter, (err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.redirect('/editor');
+      }
+    });
+    
+  })
 });
 
 // CHARACTER - DELETE                                                           // Todo: Go through each linked event, deleting references to character, delete events if necessary

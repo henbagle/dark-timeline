@@ -106,4 +106,28 @@ module.exports = {
 
   ],
 
+  characterSort: function (a, b){
+    const ages={
+      "Young":0,
+      "1 yr older":1,
+      "Adult":2,
+      "Old":3
+    }
+    let nameA = a.name.toUpperCase(); // ignore upper and lowercase
+    let nameB = b.name.toUpperCase(); // ignore upper and lowercase
+    if (nameA < nameB) {
+      return -1;
+    }
+    if (nameA > nameB) {
+      return 1;
+    }
+    if(ages[a.age] < ages[b.age]){
+      return -1;
+    }
+    if(ages[a.age] > ages[b.age]){
+      return 1;
+    }
+    return 0;
+  },
+
 };

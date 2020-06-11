@@ -4,18 +4,26 @@
 
             <h1 class="my-3 text-center">Dark Timeline Editor</h1>
 
-            <div class="my-4">
-                <h3>Characters:</h3>
-                <table class="table">
-                    {{#each characters}}
-                        <tr><td><a href="/editor/character/{{this.id}}/edit">{{this.name}} {{#if this.age}}({{this.age}}){{/if}}</a></td></tr>
-                    {{/each}}
-                </table>
-            </div>
-
             <a href="/editor/event/new" class="btn btn-primary">Create Event</a>
             <a href="/editor/character/new" class="btn btn-primary">Create Character</a>
+
+            <div class="my-4">
+                <h3>Characters:</h3>
+                <select class="selectpicker form-control" id="editorSel" data-live-search="true" onChange = "selectChange()">
+                    {{#each characters}}
+                        <option value={{this.id}}>{{this.name}} {{#if this.age}}({{this.age}}){{/if}}</option>
+                    {{/each}}
+                </select>
+            </div>
+
 
         </div>
     </div>
 </div>
+
+<script>
+    function selectChange(){
+        let sel = document.getElementById("editorSel")
+        window.location.href = "/editor/character/"+sel.value+"/edit"
+    }
+</script>

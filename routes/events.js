@@ -55,7 +55,7 @@ else{
 
     else{
         newEvent.characters.forEach((char) => {      // For each character this event belongs to
-        addEventToChar(char, dbCreate)               // Add the event to them
+        addEventToChar(char, Number(dbCreate.period), dbCreate)               // Add the event to them
         })
 
         res.json({ok:true})                          // return ok
@@ -78,7 +78,10 @@ Event.findById(editEvent["_id"], (err, toEdit) => {     // get the unedited vers
 
     editEvent.characters.forEach((char) => {            // Checking for new characters
         if(!toEdit.characters.includes(char)){          // if the old list of chars doesn't include this element of the new one
-        addEventToChar(char, editEvent);                // Add the event to that character
+            addEventToChar(char, Number(editEvent.period), editEvent);      // Add the event to that character
+        }
+        else{
+            addEventToChar(char, Number(editEvent.period))       // Without an event, it sorts that event list (in case we've edited the x)
         }
     })
     
@@ -148,14 +151,16 @@ Character.findById(charId, (err, toUpdate) => {
 })
 }
 
-function addEventToChar(charId, event){
-Character.findById(charId).populate("periods.events").exec((err, toUpdate) => {  // get them
+function addEventToChar(charId, period, event){
+Character.findById(charId).populate("periods."+period+".events").exec((err, toUpdate) => {  // get them
     if(err){
     console.log(err);
     }
 
-    toUpdate.periods[Number(event.period)].events.push(event)                   // Add this event to that character
-    toUpdate.periods[Number(event.period)].events.sort((a, b) => {return(a["x"] - b["x"])}) // Sort the period by perceived time
+    if(event){
+        toUpdate.periods[period].events.push(event)                   // Add this event to that character
+    }
+    toUpdate.periods[period].events.sort((a, b) => {return(a["x"] - b["x"])}) // Sort the period by perceived time
     toUpdate.save();
 })
 }
