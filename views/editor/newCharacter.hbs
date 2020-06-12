@@ -39,11 +39,21 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">{{this.name}}
-
-                                        <span class="form-check form-check-inline float-right">
-                                            <input type="hidden" value="0" name="char[periods][{{@index}}][default]"><input class="form-check mx-2" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value" id="default-{{@index}}">
-                                            <label for="default-{{@index}}" class="form-check-label"> In Default View</label> 
-                                        </span></th>
+                                        <div class="float-right">
+                                            <span class="form-check form-check-inline">
+                                                <input type="hidden" value="0" name="char[periods][{{@index}}][toStart]"><input class="form-check mx-2" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value" id="toStart-{{@index}}">
+                                                <label for="toStart-{{@index}}" class="form-check-label"> Extends to start</label> 
+                                            </span>
+                                            <span class="form-check form-check-inline">
+                                                <input type="hidden" value="0" name="char[periods][{{@index}}][toEnd]"><input class="form-check mx-2" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value" id="toEnd-{{@index}}">
+                                                <label for="toEnd-{{@index}}" class="form-check-label"> Extends to end</label> 
+                                            </span>
+                                            <span class="form-check form-check-inline">
+                                                <input type="hidden" value="0" name="char[periods][{{@index}}][default]"><input class="form-check mx-2" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value" id="default-{{@index}}">
+                                                <label for="default-{{@index}}" class="form-check-label"> In default View</label> 
+                                            </span>
+                                        </div>
+                                    </th>
                                 </tr>
                             </thead>
                     </table>

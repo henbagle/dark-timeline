@@ -64,15 +64,26 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">{{pName @index}}
-                                        <span class="form-check form-check-inline float-right">
+                                      <div class="float-right">
+                                        <span class="form-check form-check-inline">
+                                            <input disabled type="hidden" class="dt-input" value="{{hiddenI this.toStart}}" name="char[periods][{{@index}}][toStart]"><input disabled class="form-check mx-2 dt-input" onclick="togglePrevious(this)" type="checkbox" id="toStart-{{@index}}" {{#if this.toStart}}checked{{/if}}>
+                                            <label for="toStart-{{@index}}" class="form-check-label">Extends to start</label> 
+                                        </span>
+                                        <span class="form-check form-check-inline">
+                                            <input disabled type="hidden" class="dt-input" value="{{hiddenI this.toEnd}}" name="char[periods][{{@index}}][toEnd]"><input disabled class="form-check mx-2 dt-input" onclick="togglePrevious(this)" type="checkbox" id="toEnd-{{@index}}" {{#if this.toEnd}}checked{{/if}}>
+                                            <label for="toEnd-{{@index}}" class="form-check-label"> Extends to end</label> 
+                                        </span>
+                                        <span class="form-check form-check-inline">
                                             <input disabled type="hidden" class="dt-input" value="{{hiddenI this.default}}" name="char[periods][{{@index}}][default]"><input disabled class="form-check mx-2 dt-input" onclick="togglePrevious(this)" type="checkbox" id="default-{{@index}}" {{#if this.default}}checked{{/if}}>
                                             <label for="default-{{@index}}" class="form-check-label"> In Default View</label> 
-                                        </span></th>
+                                        </span>
+                                      </div>
+                                    </th>
                                 </tr>
                             </thead>
 
                             {{#each this.events}}
-                            <tr><td><a href="/editor/event/{{this.id}}/edit">{{this.name}}</a></td></tr>
+                            <tr><td><a href="/editor/event/{{this.id}}/edit">{{eventTitle this}}</a></td></tr>
                             {{/each}}
 
                     </table>

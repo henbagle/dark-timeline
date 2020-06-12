@@ -4,6 +4,7 @@ module.exports = {
       name: 'Summer 2019',
       date: 'June 2019',
       timelines: ['1920', '1953', '1986', '2019', '2052'],
+      min: "1953",
       dates: [
         {
           date: 'June 20th',
@@ -22,6 +23,7 @@ module.exports = {
       name: 'Season 1',
       date: 'November 2019',
       timelines: ['1920', '1953', '1986', '2019', '2052'],
+      min: "1953",
       dates: [
         {
           date: 'November 4th',
@@ -113,8 +115,8 @@ module.exports = {
       "Adult":2,
       "Old":3
     }
-    let nameA = a.name.toUpperCase(); // ignore upper and lowercase
-    let nameB = b.name.toUpperCase(); // ignore upper and lowercase
+    let nameA = a.shortName.toUpperCase(); // ignore upper and lowercase
+    let nameB = b.shortName.toUpperCase(); // ignore upper and lowercase
     if (nameA < nameB) {
       return -1;
     }
@@ -129,5 +131,18 @@ module.exports = {
     }
     return 0;
   },
+
+  formatName(character, long){
+    let formattedAge = ''
+    if(character.age){
+      formattedAge = ` (${character.age})`;
+    }
+    if(long){
+      return(character.name+formattedAge)
+    }
+    else{
+      return(character.shortName+formattedAge)
+    }
+  }
 
 };

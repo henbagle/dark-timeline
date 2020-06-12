@@ -12,6 +12,8 @@ const characterSchema = new mongoose.Schema({
   periods: [
     {
       default: Boolean,
+      toStart: Boolean,
+      toEnd: Boolean,
       events: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'event',

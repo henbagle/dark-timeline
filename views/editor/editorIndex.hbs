@@ -3,12 +3,14 @@
         <div class="col-md-8 mx-auto">
 
             <h1 class="my-3 text-center">Dark Timeline Editor</h1>
-
-            <a href="/editor/event/new" class="btn btn-primary">Create Event</a>
-            <a href="/editor/character/new" class="btn btn-primary">Create Character</a>
+            
+            <div class="my-4">
+                <a href="/editor/event/new" class="btn btn-primary">Create Event</a>
+                <a href="/editor/character/new" class="btn btn-primary">Create Character</a>
+            </div>
 
             <div class="my-4">
-                <h3>Characters:</h3>
+                <h4>Select Character:</h4>
                 <select class="selectpicker form-control" id="editorSel" data-live-search="true" onChange = "selectChange()">
                     {{#each characters}}
                         <option value={{this.id}}>{{this.name}} {{#if this.age}}({{this.age}}){{/if}}</option>

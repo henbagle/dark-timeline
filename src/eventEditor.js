@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { formatName } from "../helpers.js"
 
 function SubmitButtons(props) {
   if (props.edit === false) {
@@ -68,6 +69,14 @@ class EventFormTextBox extends React.Component{
 }
 
 class EventFormCharacters extends React.Component {
+  constructor(props){
+    super(props);
+    this.state={
+      value:""
+    }
+
+    this.onSelectChange = this.onSelectChange.bind(this);
+  }
   addCharacter(i){
     const item = this.props.characters[i];
     let newArray = this.props.valueContainer.characters;
@@ -86,58 +95,113 @@ class EventFormCharacters extends React.Component {
     this.props.charChange(newArray);
   }
   
-  formatName(character){
-    let formattedAge = ''
-    if(character.age){
-      formattedAge = ` (${character.age})`;
-    }
-    return(character.name+formattedAge)
+  onSelectChange(field){
+    this.setState({
+      value:field.target.value
+    })
+    this.addCharacter(field.target.value)
+    this.setState({
+      value:""
+    })
+
   }
 
   render(){
     const options = this.props.characters.map((val, i) => {
       return(
-        <button type="button" key={val["_id"]} value={i} onClick={this.addCharacter.bind(this, i)}>{this.formatName(val)}</button>
+        <option key={val["_id"]} value={i}>{formatName(val, true)}</option>
       )
     })
 
     const trs = this.props.valueContainer.characters.map((val, i) => {
-      return(<tr key={val["_id"]}><td>
-        {this.formatName(val)}</td>
-        <td><span className="floatRight" value={i} onClick={this.removeCharacter.bind(this, i)}>X</span>
-      </td></tr>)
-    })
+      return(<tr key={val["_id"]}>
+        <td>{formatName(val)}</td>
+        <td>
+          <span className="float-right" value={i} onClick={this.removeCharacter.bind(this, i)}><i className="fas fa-trash-alt"></i></span>
+        </td>
+        </tr>)
+    })  
+
 
     return(
-    <div>
-      <div>{options}</div>
-      <table>
-        <tbody>
-          {trs}
-        </tbody>
-      </table>
+    <div className="my-3">
+      <label>Add Characters:</label>
+      <select className="form-control" data-live-search="true" onChange={this.onSelectChange} value={this.state.value}>
+          {options}
+      </select>
+      <div className="my-2">
+        <table className="table">
+          <tbody>
+            {trs}
+          </tbody>
+        </table>
+      </div>
     </div>
     )
   }
+}
 
+function EventFormPoint (props){
+  return(
+    <div>
+      <label>Point Style:</label>
+      <select name={props.field} 
+        value={props.valueContainer[props.field]}
+        onChange={props.onChange}
+        className="form-control">
+          <option value="circle">Circle</option>
+          <option value="crossRot">CrossRot</option>
+          <option value="rect">Rectangle</option>
+          <option value="triangle">Triangle</option>
+          <option value="star">Star</option>
+          <option value="dash">Dash</option>
+          <option value="line">Line</option>
+          <option value="break">Break in line</option>
+      </select>
+    </div>)
+}
+
+function EventFormMethod (props){
+  return(
+    <div>
+      <label>Method of Time Travel:</label>
+      <select name={props.field} 
+        value={props.valueContainer[props.field]}
+        onChange={props.onChange}
+        className="form-control">
+          <option value="">No travel</option>
+          <option value="Cave">The Cave</option>
+          <option value="Chair">The Chair</option>
+          <option value="Apparatus">The Apparatus</option>
+          <option value="Unknown">Unknown</option>
+      </select>
+    </div>)
 }
 
 class EventFormPeriod extends React.Component {
+  editPeriod(){
+    if(!this.props.edit){
+      return(
+        <div>
+          <label>Time Period:</label>
+          <select name={this.props.field} 
+            value={this.props.valueContainer[this.props.field]}
+            onChange={this.props.onChange}
+            className="form-control">
+              <option value="0">Summer 2019</option>
+              <option value="1">Season 1</option>
+              <option value="2">Season 2</option>
+              <option value="3">Season 3</option>
+          </select>
+        </div>)
+    }
+  }
   render(){
     const xLabel = "Perceived Time: "+this.props.dateyear.date
     const yLabel = "Actual Year: "+this.props.dateyear.year
     return(
       <div>
-        <label>Time Period:</label>
-        <select name={this.props.field} 
-          value={this.props.valueContainer[this.props.field]}
-          onChange={this.props.onChange}
-          className="form-control">
-            <option value="0">Summer 2019</option>
-            <option value="1">Season 1</option>
-            <option value="2">Season 2</option>
-            <option value="3">Season 3</option>
-          </select>
+          {this.editPeriod()}
             <div className="row">
               <EventFormXY
                 valueContainer={this.props.valueContainer}
@@ -225,10 +289,10 @@ class EventForm extends React.Component {
         location: "",
         link: "",
         link2: "",
-        chartIcon: "",
+        chartIcon: "circle",
         x: 1, 
         y: 3,
-        characters: []
+        characters: [],
       },
       edit: edit,
       editId: (edit ? href[href.length-2] : undefined),
@@ -243,7 +307,7 @@ class EventForm extends React.Component {
   handleInputChange(field){
     event = this.state.event;
     let value = field.target.value
-    if(field.target.type == "number"){
+    if(!isNaN(Number(value))){
       value = Number(value);
     }
     event[field.target.name] = value
@@ -394,20 +458,24 @@ class EventForm extends React.Component {
           placeholder="Jonas finds the map in the attic"
           isArea={true}/>
 
-          <EventFormTextBox 
+          <EventFormMethod 
           valueContainer={this.state.event}
           onChange={this.handleInputChange} 
-          field="methodOfTravel" 
-          placeholder="Stairs"/>
+          field="methodOfTravel" />
 
           <EventFormTextBox 
           valueContainer={this.state.event}
           onChange={this.handleInputChange} 
-          field="location" 
+          field="location"
           placeholder="Kahnwald Residence"/>
 
           <EventFormExtraFields
           valueContainer={this.state.event}
+          onChange={this.handleInputChange} />
+
+          <EventFormPoint
+          valueContainer={this.state.event}
+          field="chartIcon" 
           onChange={this.handleInputChange} />
 
           <EventFormPeriod
@@ -415,7 +483,7 @@ class EventForm extends React.Component {
           onChange={this.handleInputChange} 
           field="period"
           dateyear={this.getDateTimelineInfo(this.state.event, this.state.periods)}
-           />
+          edit={this.state.edit} />
 
           {characterSection}
 

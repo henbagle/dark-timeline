@@ -51,11 +51,9 @@ router.get('/editor/character/new', (req, res) => {
 router.post('/editor/character', (req, res) => {
   const newCharacter = req.body.char;
   for (let i = 0; i < newCharacter.periods.length; i++) {
-    if (newCharacter.periods[i].default == 1) {
-      newCharacter.periods[i].default = true;
-    } else {
-      newCharacter.periods[i].default = false;
-    }
+    newCharacter.periods[i].default = ((newCharacter.periods[i].default == 1) ? true : false)
+    newCharacter.periods[i].toStart = ((newCharacter.periods[i].toStart == 1) ? true : false)
+    newCharacter.periods[i].toEnd = ((newCharacter.periods[i].toEnd == 1) ? true : false)
   }
   Character.create(newCharacter, (err) => {
     if (err) {
@@ -103,6 +101,10 @@ router.get('/editor/character/:id/edit', (req, res) => {
           pName(input) { // Returns the period name at the index of the input
             return darkHelper.periods[input].name;
           },
+          eventTitle(input){
+            const date = darkHelper.periods[input.period].dates[Math.floor(input.x)].date
+            return(date+": "+input.name)
+          }
         },
       });
     }
@@ -114,11 +116,9 @@ router.put('/editor/character/:id', (req, res) => {
   const newCharacter = req.body.char;
   Character.findById(req.params.id).populate("periods.events").exec((err, old) => {
     for (let i = 0; i < newCharacter.periods.length; i++) {
-      if (newCharacter.periods[i].default == 1) {
-        newCharacter.periods[i].default = true;
-      } else {
-        newCharacter.periods[i].default = false;
-      }
+      newCharacter.periods[i].default = ((newCharacter.periods[i].default == 1) ? true : false)
+      newCharacter.periods[i].toStart = ((newCharacter.periods[i].toStart == 1) ? true : false)
+      newCharacter.periods[i].toEnd = ((newCharacter.periods[i].toEnd == 1) ? true : false)
       newCharacter.periods[i].events = old.periods[i].events
     }
 
