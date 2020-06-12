@@ -10,8 +10,8 @@ router.get('/', (req, res) => {
 });
 
 // TIMELINES - JSON of EVERYTHING
-router.get('/timeline', (req, res) => {
-  Character.find({}).populate("periods.events").exec((err, dbChar) => {
+router.get('/timeline/:p', (req, res) => {
+  Character.find({}).populate("periods."+req.params.p+".events").exec((err, dbChar) => {
     if (err) {
       console.log(err);
     } else {

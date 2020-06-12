@@ -6,3 +6,12 @@ html{
 body{
 	padding-top: 56px !important;
 }
+
+#app{
+    height: 93vh;
+    background-color: #6c6b6f;  
+}
+
+#chartjs-tooltip{
+    width: 20rem;
+}

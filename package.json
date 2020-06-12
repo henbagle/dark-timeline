@@ -21,12 +21,14 @@
     "express": "^4.17.1",
     "express-handlebars": "^4.0.4",
     "handlebars": "^4.7.6",
+    "helmet": "^3.22.1",
     "lodash": "^4.17.15",
     "method-override": "^3.0.0",
     "mongoose": "^5.9.16",
     "react": "^16.13.1",
-    "react-chartjs-2": "^2.9.0",
-    "react-dom": "^16.13.1"
+    "react-bootstrap": "^1.0.1",
+    "react-dom": "^16.13.1",
+    "tinycolor2": "^1.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",
