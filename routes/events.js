@@ -39,69 +39,69 @@ res.render('editor/eventEditor', { layout: 'edit', id: req.params.id });
   
 // EVENT - CREATE     
 router.post('/editor/event', (req, res) => {              // Process create form
+    
+    let newEvent = req.body.event;
 
-let newEvent = req.body.event;
-
-if(!newEvent.characters){                               // Make sure we've selected a character! TODO: Do this on react instead
-    res.json({ok:false})
-}
-else{
-    newEvent.characters = docsToId(newEvent.characters);  // Turn those populated characters into IDs, we don't need them
-
-    Event.create(newEvent, (err, dbCreate) => {           // Create the event
-    if(err){
-        console.log(err);
+    if(!newEvent.characters){                               // Make sure we've selected a character! TODO: Do this on react instead
+        res.json({ok:false})
     }
-
     else{
-        newEvent.characters.forEach((char) => {      // For each character this event belongs to
-        addEventToChar(char, Number(dbCreate.period), dbCreate)               // Add the event to them
-        })
+        newEvent.characters = docsToId(newEvent.characters);  // Turn those populated characters into IDs, we don't need them
 
-        res.json({ok:true})                          // return ok
+        Event.create(newEvent, (err, dbCreate) => {           // Create the event
+        if(err){
+            console.log(err);
+        }
+
+        else{
+            newEvent.characters.forEach((char) => {      // For each character this event belongs to
+            addEventToChar(char, Number(dbCreate.period), dbCreate)               // Add the event to them
+            })
+
+            res.json({ok:true})                          // return ok
+        }
+        });
     }
-    });
-}
 });
 
 // EVENT - PUT                                          PROBLEM: Doesn't re-sort characters if only x's changed (none added).
 router.put('/editor/event/:id', (req, res) => {
-let editEvent = req.body.event;                         // The edited event from React
-editEvent.characters = docsToId(editEvent.characters)   // Get rid o tha characters
+    let editEvent = req.body.event;                         // The edited event from React
+    editEvent.characters = docsToId(editEvent.characters)   // Get rid o tha characters
 
 
-Event.findById(editEvent["_id"], (err, toEdit) => {     // get the unedited version of this event
-    if(err){
-    console.log(err);
-    }
-    else{
-
-    editEvent.characters.forEach((char) => {            // Checking for new characters
-        if(!toEdit.characters.includes(char)){          // if the old list of chars doesn't include this element of the new one
-            addEventToChar(char, Number(editEvent.period), editEvent);      // Add the event to that character
-        }
-        else{
-            addEventToChar(char, Number(editEvent.period))       // Without an event, it sorts that event list (in case we've edited the x)
-        }
-    })
-    
-    toEdit.characters.forEach((char) => {                // Check for deleted characters
-        let oChar = char.toString();
-        if(!editEvent.characters.includes(oChar)){       // if the new array doesn't include an element from the old array of chars
-        delEventFromChar(char, editEvent);               // remove this event from that char
-        }
-    })
-
-    Event.findByIdAndUpdate(editEvent["_id"], editEvent, (err) => { // update the event
+    Event.findById(editEvent["_id"], (err, toEdit) => {     // get the unedited version of this event
         if(err){
         console.log(err);
         }
         else{
-        res.json({ok:true});
+
+        editEvent.characters.forEach((char) => {            // Checking for new characters
+            if(!toEdit.characters.includes(char)){          // if the old list of chars doesn't include this element of the new one
+                addEventToChar(char, Number(editEvent.period), editEvent);      // Add the event to that character
+            }
+            else{
+                addEventToChar(char, Number(editEvent.period))       // Without an event, it sorts that event list (in case we've edited the x)
+            }
+        })
+        
+        toEdit.characters.forEach((char) => {                // Check for deleted characters
+            let oChar = char.toString();
+            if(!editEvent.characters.includes(oChar)){       // if the new array doesn't include an element from the old array of chars
+            delEventFromChar(char, editEvent);               // remove this event from that char
+            }
+        })
+
+        Event.findByIdAndUpdate(editEvent["_id"], editEvent, (err) => { // update the event
+            if(err){
+            console.log(err);
+            }
+            else{
+            res.json({ok:true});
+            }
+        })
         }
     })
-    }
-})
 
 });
 

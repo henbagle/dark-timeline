@@ -2,7 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { formatName } from "../helpers.js"
 
-function SubmitButtons(props) {
+
+//
+// Don't read this code.
+//
+
+function SubmitButtons(props) {       // React function for submission buttons (Submit/Delete)
   if (props.edit === false) {
     return (<div className="my-3"><button className="btn btn-success" type="button" onClick={props.onNew}>Submit Event</button></div>);
   }
@@ -15,7 +20,7 @@ function SubmitButtons(props) {
   );
 }
 
-function EventFormXY(props) {
+function EventFormXY(props) {         // React function for X/Y number inputs 
   return(
   <div className="col-md-6">
     <label>{props.label}</label>
@@ -29,7 +34,7 @@ function EventFormXY(props) {
   </div>)
 }
 
-class EventFormTextBox extends React.Component{
+class EventFormTextBox extends React.Component{   // General use react class for a text box
   // Determines if there should be a placeholder there
   shouldPlacehold(placeholder){
     const href=window.location.pathname.split("/");
@@ -41,6 +46,7 @@ class EventFormTextBox extends React.Component{
     }
   }
 
+  // Determines if the textbox should be a textarea or not
   determineTextType(){
     if(this.props.isArea){
       return(
@@ -68,7 +74,7 @@ class EventFormTextBox extends React.Component{
   }
 }
 
-class EventFormCharacters extends React.Component {
+class EventFormCharacters extends React.Component { // React class for the character selection section
   constructor(props){
     super(props);
     this.state={
@@ -141,7 +147,7 @@ class EventFormCharacters extends React.Component {
   }
 }
 
-function EventFormPoint (props){
+function EventFormPoint (props){        // React select for the point style select
   return(
     <div>
       <label>Point Style:</label>
@@ -161,7 +167,7 @@ function EventFormPoint (props){
     </div>)
 }
 
-function EventFormMethod (props){
+function EventFormMethod (props){       // React select for the method of transportation select
   return(
     <div>
       <label>Method of Time Travel:</label>
@@ -173,12 +179,16 @@ function EventFormMethod (props){
           <option value="Cave">The Cave</option>
           <option value="Chair">The Chair</option>
           <option value="Apparatus">The Apparatus</option>
+          <option value="Portal">The Portal</option>
+          <option value="God Particle">The God Particle</option>
+          <option value="Sic Mundus God Particle">Sic Mundus God Particle</option>
+          <option value="Alt-Martha's Device">Alt-Martha's Device</option>
           <option value="Unknown">Unknown</option>
       </select>
     </div>)
 }
 
-class EventFormPeriod extends React.Component {
+class EventFormPeriod extends React.Component {   // React class for the time period select
   editPeriod(){
     if(!this.props.edit){
       return(
@@ -224,7 +234,7 @@ class EventFormPeriod extends React.Component {
   }
 }
 
-class EventFormExtraFields extends React.Component {
+class EventFormExtraFields extends React.Component {  // React class for the "toggle extra fields" zone
   constructor(props) {
     super(props);
     this.state = {
@@ -272,7 +282,7 @@ class EventFormExtraFields extends React.Component {
 
 }
 
-class EventForm extends React.Component {
+class EventForm extends React.Component {     // Overarching form component
   constructor(props) {
     super(props);
     let edit;
@@ -284,7 +294,7 @@ class EventForm extends React.Component {
         name: "",
         description: "",
         image: "",
-        period: 1,
+        period: 2,
         methodOfTravel: "",
         location: "",
         link: "",
@@ -307,8 +317,11 @@ class EventForm extends React.Component {
   handleInputChange(field){
     event = this.state.event;
     let value = field.target.value
-    if(!isNaN(Number(value))){
+    if(!isNaN(Number(value)) && Number(value) > 0){
       value = Number(value);
+    }
+    if (value == "0"){
+      value = 0;
     }
     event[field.target.name] = value
     this.setState({
