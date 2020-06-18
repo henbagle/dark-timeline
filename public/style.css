@@ -4,14 +4,72 @@ html{
 }
 
 body{
-	padding-top: 56px !important;
+    padding-top: 56px !important;
 }
 
 #app{
-    height: 93vh;
-    background-color: #6c6b6f;  
+    position: absolute;
+    top: 56px;
+    width: 100%;
+    left:0;
+    background-color: #6c6b6f;
+}
+
+#chart{
+    height: calc(100vh - 56px);
+    padding-right: 7px;
+    padding-left: 0;
 }
 
 #chartjs-tooltip{
     width: 20rem;
 }
+
+#legend{
+    padding: 5px;
+    height: calc(100vh - 56px);
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+#legendMeta{
+    flex: 0 1 auto;
+}
+
+#legendContent{
+    flex: 1 0 auto;
+    height: 93%
+}
+
+
+[class="0-legend"] {
+    padding: 0;
+    height: 100%;
+    margin-bottom: 0;
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    flex-flow: column wrap;
+    overflow: auto;
+}
+
+[class="0-legend"] li {
+    display: inline-block;
+}
+
+[class="0-legend"] li.hidden {
+    text-decoration: line-through;
+}
+
+[class="0-legend"] li.hidden span{
+    background-color: transparent !important;
+    border: 2px solid;
+}
+
+[class="0-legend"] li span {
+    display: inline-block;
+    height: 13px;
+    width: 13px !important;
+    margin-right: 10px;
+    margin-top: 4px;
+} 
