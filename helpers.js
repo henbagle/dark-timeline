@@ -1,10 +1,13 @@
 module.exports = {
   periods: [
     {
-      name: 'Summer 2019',
+      name: 'Pre-Season 1',
       date: 'June 2019',
       timelines: ['1920', '1953', '1986', '2019', '2052'],
-      min: "1953",
+      min: "1986",
+      max: "2052",
+      emin: "2019",
+      emax: "2019",
       dates: [
         {
           date: 'June 20th',
@@ -24,6 +27,9 @@ module.exports = {
       date: 'November 2019',
       timelines: ['1920', '1953', '1986', '2019', '2052'],
       min: "1953",
+      max: "2052",
+      emin: "1953",
+      emax: "2019",
       dates: [
         {
           date: 'November 4th',
@@ -67,6 +73,8 @@ module.exports = {
       name: 'Season 2',
       date: 'June 2020',
       timelines: ['1921', '1954', '1987', '2020', '2053'],
+      min: "1921",
+      max: "2053",
       dates: [
         {
           date: 'June 21st',
@@ -115,6 +123,7 @@ module.exports = {
       "Adult":2,
       "Old":3
     }
+    
     let nameA = a.shortName.toUpperCase(); // ignore upper and lowercase
     let nameB = b.shortName.toUpperCase(); // ignore upper and lowercase
     if (nameA < nameB) {
