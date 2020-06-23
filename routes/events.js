@@ -39,11 +39,18 @@ res.render('editor/eventEditor', { layout: 'edit', id: req.params.id });
   
 // EVENT - CREATE     
 router.post('/editor/event', (req, res) => {              // Process create form
-    
     let newEvent = req.body.event;
+    newEvent.name = newEvent.name.replace(".", "");       // Get rid o tha periods
+    if(newEvent.description){                             // Add periods to description if they aren't there
+        newEvent.description = newEvent.description.trim();
+        if(![".", "?", '"', '!', ')'].includes(newEvent.description.substr(-1))){
+            newEvent.description = newEvent.description.concat(".");
+        }
+    }
 
     if(!newEvent.characters){                               // Make sure we've selected a character! TODO: Do this on react instead
         res.json({ok:false})
+    
     }
     else{
         newEvent.characters = docsToId(newEvent.characters);  // Turn those populated characters into IDs, we don't need them
@@ -68,6 +75,13 @@ router.post('/editor/event', (req, res) => {              // Process create form
 router.put('/editor/event/:id', (req, res) => {
     let editEvent = req.body.event;                         // The edited event from React
     editEvent.characters = docsToId(editEvent.characters)   // Get rid o tha characters
+    editEvent.name = editEvent.name.replace(".", "");       // Get rid o tha periods
+    if(editEvent.description){
+        editEvent.description = editEvent.description.trim();
+        if(![".", "?", '"', '!', ')'].includes(editEvent.description.substr(-1))){
+            editEvent.description = editEvent.description.concat(".");
+        }
+    }
 
 
     Event.findById(editEvent["_id"], (err, toEdit) => {     // get the unedited version of this event
@@ -152,17 +166,17 @@ Character.findById(charId, (err, toUpdate) => {
 }
 
 function addEventToChar(charId, period, event){
-Character.findById(charId).populate("periods."+period+".events").exec((err, toUpdate) => {  // get them
-    if(err){
-    console.log(err);
-    }
+    Character.findById(charId).populate("periods."+period+".events").exec((err, toUpdate) => {  // get them
+        if(err){
+        console.log(err);
+        }
 
-    if(event){
-        toUpdate.periods[period].events.push(event)                   // Add this event to that character
-    }
-    toUpdate.periods[period].events.sort((a, b) => {return(a["x"] - b["x"])}) // Sort the period by perceived time
-    toUpdate.save();
-})
+        if(event){
+            toUpdate.periods[period].events.push(event)                   // Add this event to that character
+        }
+        toUpdate.periods[period].events.sort((a, b) => {return(a["x"] - b["x"])}) // Sort the period by perceived time
+        toUpdate.save();
+    })
 }
 
 module.exports = router;

@@ -4,3 +4,4 @@
 darktimeline.code-workspace
 .eslintrc.js
 /public/dist/
+/garbage/

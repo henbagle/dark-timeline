@@ -20,9 +20,6 @@ if (process.env.NODE_ENV !== 'production') {
 // ////////////////
 
 const chartRouter = require('./routes/charts');
-const characterRouter = require('./routes/characters');
-const eventRouter = require('./routes/events');
-
 
 // ////////////////
 // INIT APP
@@ -31,6 +28,7 @@ const app = express();
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json())
 app.set('view engine', 'hbs');
 app.use(methodOverride('_method'));
 
@@ -51,16 +49,21 @@ mongoose.connect(process.env.DATABASEURL,
 // ROUTES
 // ////////////////
 
+if (process.env.NODE_ENV !== 'production') {
+  const characterRouter = require('./routes/characters');
+  const eventRouter = require('./routes/events');
+  app.use(characterRouter);
+  app.use(eventRouter);
+}
+
 app.use(chartRouter);
-app.use(characterRouter);
-app.use(eventRouter);
 
 
 // ////////////////
 // START APP
 // ////////////////
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV != 'production') {
   app.listen(3000, () => {
     console.log('Dark timeline testing server running on port 3000!');
   });

@@ -11,11 +11,15 @@ router.get('/', (req, res) => {
 
 // TIMELINES - JSON of EVERYTHING
 router.get('/timeline/:p', (req, res) => {
-  Character.find({}).populate("periods."+req.params.p+".events").exec((err, dbChar) => {
+  let p = req.params.p;
+  if(p == 3){                 // Comment this if statement out when season 3 happens
+    p = '2'
+  }
+  Character.find({}).populate("periods."+p+".events").exec((err, dbChar) => {
     if (err) {
       console.log(err);
     } else {
-      res.send({ characters: dbChar, period: darkHelper.periods[req.params.p] });
+      res.send({ characters: dbChar, period: darkHelper.periods[p], periodN: p });
     }
   });
 });
