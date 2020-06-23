@@ -16,6 +16,7 @@
   "dependencies": {
     "@handlebars/allow-prototype-access": "^1.0.3",
     "body-parser": "^1.19.0",
+    "bootstrap-select": "^1.13.17",
     "chart.js": "^2.9.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -27,12 +28,12 @@
     "method-override": "^3.0.0",
     "mongoose": "^5.9.16",
     "popper.js": "^1.16.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
     "tinycolor2": "^1.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "@babel/preset-env": "^7.10.2",
     "@babel/preset-react": "^7.10.1",
     "autoprefixer": "^9.8.0",

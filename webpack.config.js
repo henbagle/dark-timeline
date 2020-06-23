@@ -1,9 +1,8 @@
 const path = require("path");
 const webpack = require("webpack");
 
-module.exports = {
+let config = {
     entry: {
-        eventEditor:"./src/eventEditor.js",
         timeline:"./src/timeline.js",
         index: "./src/index.js",
         style: "./src/style.scss"
@@ -18,7 +17,7 @@ module.exports = {
             }
           },
           {
-            test: /\.(scss)$/,
+            test: /\.(scss|css)$/,
             use: [{
               loader: 'style-loader', // inject CSS to page
             }, {
@@ -46,4 +45,17 @@ module.exports = {
         filename: "[name].js",
         publicPath: "/"
     }, 
+    watchOptions: {
+      ignored: '/node_modules/'
+    }
+}
+
+module.exports = (env, argv) => {
+  if(argv.mode == 'development'){
+    config.entry.eventEditor = "./src/eventEditor.js",
+    config.entry.bootstrapSelect = './src/bootstrapSelect.js'
+    config.watch = true;
+  }
+
+  return(config);
 }
