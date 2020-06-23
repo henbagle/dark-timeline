@@ -1,6 +1,8 @@
+
+
 <div class="container">
     <div class="row">
-        <div class="col-md-8 mx-auto">
+        <div class="col-md-10 mx-auto">
 
             <h1 class="my-3 text-center">Dark Timeline Editor</h1>
             
@@ -11,7 +13,7 @@
 
             <div class="my-4">
                 <h4>Select Character:</h4>
-                <select class="selectpicker form-control" id="editorSel" data-live-search="true" onChange = "selectChange()">
+                <select class="custom-select" id="editorSel" data-live-search="true" onChange = "selectChange()">
                     {{#each characters}}
                         <option value={{this.id}}>{{this.name}} {{#if this.age}}({{this.age}}){{/if}}</option>
                     {{/each}}
@@ -22,10 +24,9 @@
         </div>
     </div>
 </div>
-
 <script>
     function selectChange(){
-        let sel = document.getElementById("editorSel")
-        window.location.href = "/editor/character/"+sel.value+"/edit"
-    }
+    let sel = document.getElementById("editorSel")
+    window.location.href = "/editor/character/"+sel.value+"/edit"
+}
 </script>

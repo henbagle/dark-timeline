@@ -8,8 +8,8 @@ export const tooltipCallback = function(tooltipModel){
     if(!tooltipEl){
       tooltipEl = document.createElement('div');
       tooltipEl.id = 'chartjs-tooltip';
-      tooltipEl.classList = ['card']
-      tooltipEl.innerHTML = '<div class="card-body"> <h6 id="ttHeader" class="card-title"></h6><p id="ttBody" class="card-text"></p> </div> <div class="card-footer text-muted" id="ttFooter"></div>';
+      tooltipEl.classList.add('card', 'text-white', 'bg-dark')
+      tooltipEl.innerHTML = '<div class="card-body"> <h5 id="ttHeader" class="card-title"></h5><p id="ttBody" class="card-text"></p> </div> <div class="card-footer text-muted" id="ttFooter"></div>';
       document.body.appendChild(tooltipEl);
     }
   
@@ -19,25 +19,19 @@ export const tooltipCallback = function(tooltipModel){
       return;
     }
   
-    // Set caret Position
-    tooltipEl.classList.remove('above', 'below', 'no-transform');
-    if (tooltipModel.yAlign) {
-        tooltipEl.classList.add('above');
-    } else {
-        tooltipEl.classList.add('no-transform');
-    }
-  
-    // Set text?
+    // Set text
     if(tooltipModel.body){
       const char = this._chart.data.datasets[tooltipModel.dataPoints[0].datasetIndex]
       const event = char.data[tooltipModel.dataPoints[0].index].event
+
       const header = document.getElementById('ttHeader');
       const content = document.getElementById('ttBody');
       const footer = document.getElementById('ttFooter');
+
       header.innerHTML = event.name;
       content.innerHTML = event.description;
+
       footer.innerHTML = "<div><strong>"+formatName(char.character, true)+"</strong></div>"
-  
       if(event.location){
         footer.innerHTML = footer.innerHTML+" <div><strong>Location: </strong>"+event.location+"</div>"
       }
@@ -72,9 +66,6 @@ export const tooltipCallback = function(tooltipModel){
     tooltipEl.style.position = 'absolute';
     tooltipEl.style.left = x + 'px';
     tooltipEl.style.top = y + 'px';
-    tooltipEl.style.fontFamily = tooltipModel._bodyFontFamily;
-    tooltipEl.style.fontSize = tooltipModel.bodyFontSize + 'px';
-    tooltipEl.style.fontStyle = tooltipModel._bodyFontStyle;
     //tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
     tooltipEl.style.pointerEvents = 'none';
 } 

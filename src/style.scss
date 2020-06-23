@@ -32,7 +32,9 @@ body{
     padding: 5px;
     height: calc(100vh - 56px);
     display: flex;
+    transition:flex 0.3s ease-out;
     flex-flow: column nowrap;
+    overflow: hidden;
     
     #legendMeta{
         flex: 0 1 auto;
@@ -40,10 +42,9 @@ body{
     
     #legendContent{
         flex: 1 0 auto;
-        height: 93%
+        height: 91%
     }
 }
-
 
 [class="0-legend"] {
     padding: 0;

@@ -132,6 +132,7 @@ let Timeline = new Chart(app, {
 
 //   FETCH DATA: Get all timeline information, input it into the chart 
 fetch("/timeline/"+p).then((response) => response.json()).then((result) => {
+  p = result.periodN
 
   // Set scale based on period data - labels, min/max
   Timeline.options.scales.xAxes[0].labels = result.period.dates.map((val) => {
@@ -144,8 +145,19 @@ fetch("/timeline/"+p).then((response) => response.json()).then((result) => {
   })
   Timeline.options.scales.xAxes[1].ticks.max = result.period.dates.length,
   Timeline.options.scales.yAxes[0].labels = result.period.timelines
-  Timeline.options.scales.yAxes[0].ticks.min = (result.period.min ? result.period.min : undefined)
-  Timeline.options.scales.yAxes[0].ticks.max = (result.period.max ? result.period.max : undefined)
+  Timeline.options.scales.yAxes[0].ticks.min = (result.period.emin ? result.period.emin : undefined)
+  Timeline.options.scales.yAxes[0].ticks.max = (result.period.emax ? result.period.emax : undefined)
+
+  Timeline.minmax = {}
+  Timeline.minmax.min = (result.period.min ? result.period.min : undefined)
+  Timeline.minmax.max = (result.period.max ? result.period.max : undefined)
+  Timeline.minmax.emin = (result.period.emin ? result.period.emin : undefined)
+  Timeline.minmax.emax = (result.period.emax ? result.period.emax : undefined)
+
+  if((Timeline.minmax.emin === undefined) && (Timeline.minmax.emax === undefined)){
+    document.getElementById('legendMeta').removeChild(document.getElementById('showExtraTimelinesContainer'));
+  }
+  
   
   // Init data
   let data = {datasets:[]}
@@ -248,32 +260,38 @@ fetch("/timeline/"+p).then((response) => response.json()).then((result) => {
   
 })
 
+window.addEventListener('touchstart', function onFirstTouch() {
 
-// Input: chart object, list of shown datasets. Calculates offsets and applies to each dataset. SUPER IMPURE!
-function generateOffsets(tl){
-  const ci = tl.chart
-  const s = tl.shownDatasets
-  let s2 = s.sort((a, b) => {
-    darkFirstElement(ci.data.datasets[a]) - darkFirstElement(ci.data.datasets[b])
-  })
-  ci.data.datasets.forEach((set, i) => {
-    if(s.includes(i)){
-      set.data.forEach((point) => {
-        point.y=( ((( 1 / (s.length+1))* (s2.indexOf(i)+1)) + -0.5 )+point.oy ).toFixed(3);
-      })
-    }
-  })
-  ci.update();
-}
+  // or set some global variable
+  window.USER_IS_TOUCHING = true;
 
-function darkFirstElement(dataset){
-  if(dataset.data[0].x < 0){
-    return(dataset.data[1].x);
+  Timeline.options.tooltips.intersect = false;
+
+  // we only need to know once that a human touched the screen, so we can stop listening now
+  window.removeEventListener('touchstart', onFirstTouch, false);
+}, false);
+
+document.getElementById("legendToggle").addEventListener('click', () => {
+  const legend = document.getElementById("legend")
+  legend.classList.contains("d-none") ? legend.classList.remove("d-none") : legend.classList.add("d-none");
+})
+
+document.getElementById('showExtraTimelines').addEventListener('click',  () => {
+  const box = document.getElementById('showExtraTimelines')
+
+  if(box.checked){
+    Timeline.options.scales.yAxes[0].ticks.min = Timeline.minmax.min
+    Timeline.options.scales.yAxes[0].ticks.max = Timeline.minmax.max
   }
-  return(dataset.data[0].x);
-}
+  else{
+    Timeline.options.scales.yAxes[0].ticks.min = Timeline.minmax.emin
+    Timeline.options.scales.yAxes[0].ticks.max = Timeline.minmax.emax
+  }
 
-function legendClickCallback(event) {
+  Timeline.update();
+})
+
+function legendClickCallback(event) {     // Callback when clicked on legend item
   event = event || window.event;
 
   const target = event.target || event.srcElement;
@@ -295,4 +313,28 @@ function legendClickCallback(event) {
   }
 
   generateOffsets(chart)
+}
+
+// Input: chart object, list of shown datasets. Calculates offsets and applies to each dataset. SUPER IMPURE!
+function generateOffsets(tl){
+  const ci = tl.chart
+  const s = tl.shownDatasets
+  let s2 = s.sort((a, b) => {
+    darkFirstElement(ci.data.datasets[a]) - darkFirstElement(ci.data.datasets[b])
+  })
+  ci.data.datasets.forEach((set, i) => {
+    if(s.includes(i)){
+      set.data.forEach((point) => {
+        point.y=( ((( 1 / (s.length+1))* (s2.indexOf(i)+1)) + -0.5 )+point.oy ).toFixed(3);
+      })
+    }
+  })
+  ci.update();
+}
+
+function darkFirstElement(dataset){       // Supposedly returns the first x, ignoring the 0th if it is an extend to start
+  if(dataset.data[0].x < 0){              // ..... supposedly
+    return(dataset.data[1].x);
+  }
+  return(dataset.data[0].x);
 }

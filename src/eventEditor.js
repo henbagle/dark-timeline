@@ -22,7 +22,7 @@ function SubmitButtons(props) {       // React function for submission buttons (
 
 function EventFormXY(props) {         // React function for X/Y number inputs 
   return(
-  <div className="col-md-6">
+  <div className="col-md">
     <label>{props.label}</label>
     <input type="number" name={props.field} 
     value={props.valueContainer[props.field]} 
@@ -178,7 +178,7 @@ function EventFormMethod (props){       // React select for the method of transp
           <option value="">No travel</option>
           <option value="Cave">The Cave</option>
           <option value="Chair">The Chair</option>
-          <option value="Apparatus">The Apparatus</option>
+          <option value="Tannhaus Machine">The Tannhaus Machine</option>
           <option value="Portal">The Portal</option>
           <option value="God Particle">The God Particle</option>
           <option value="Sic Mundus God Particle">Sic Mundus God Particle</option>
@@ -372,40 +372,45 @@ class EventForm extends React.Component {     // Overarching form component
 
   // Handle pressing of submit button for new event
   onNew() {
-    $.ajax({
-      type: "POST",
-      url: "/editor/event",
-      data: {event: this.state.event},
-      success: (data) => {
-        window.location.replace("/editor")
-      },
+    let request = new XMLHttpRequest();
 
-    })
+    request.onreadystatechange = function(){
+      if (request.status === 0 || (request.status >= 200 && request.status < 400)) {
+        window.location.replace("/editor")
+      }
+    }
+    request.open('POST', "/editor/event", true);
+    request.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    request.send(JSON.stringify({event: this.state.event}));
   }
 
   // Handle pressing of submit button for edited event
   onEdit() {
-    $.ajax({
-      type: "PUT",
-      url: ("/editor/event/" + this.state.event["_id"]),
-      data: {event: this.state.event},
-      success: (data) => {
-        window.location.replace("/editor")
-      },
+    let request = new XMLHttpRequest();
 
-    })
+    request.onreadystatechange = function(){
+      if (request.status === 0 || (request.status >= 200 && request.status < 400)) {
+        window.location.replace("/editor")
+      }
+    }
+    request.open('PUT', "/editor/event/" + this.state.event["_id"], true);
+    request.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    request.send(JSON.stringify({event: this.state.event}));
+
   }
 
   onDelete(){
-    $.ajax({
-      type: "DELETE",
-      url: ("/editor/event/" + this.state.event["_id"]),
-      data: {},
-      success: (data) => {
-        window.location.replace("/editor")
-      },
+    let request = new XMLHttpRequest();
 
-    })
+    request.onreadystatechange = function(){
+      if (request.status === 0 || (request.status >= 200 && request.status < 400)) {
+        window.location.replace("/editor")
+      }
+    }
+    request.open('DELETE', "/editor/event/" + this.state.event["_id"], true);
+    request.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    request.send(JSON.stringify({event: this.state.event}));
+
   }
 
 
