@@ -6,8 +6,12 @@ const Event = require('../models/Event');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  res.render('timeline', { layout: 'chart' , periods: darkHelper.periods})
+  res.render('timeline', { layout: 'chart' , periods: darkHelper.periods, hasTimeline: true})
 });
+
+router.get("/faq", (req, res) => {
+  res.render("faq", {layout: 'chart'})
+})
 
 // TIMELINES - JSON of EVERYTHING
 router.get('/timeline/:p', (req, res) => {
