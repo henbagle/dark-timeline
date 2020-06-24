@@ -50,6 +50,10 @@ export const tooltipCallback = function(tooltipModel){
     if((tooltipEl.clientHeight + y) > window.innerHeight){
       y = y - tooltipEl.clientHeight - 40;
     }
+
+    if(y < window.scrollY){
+      y = window.scrollY + 76;
+    }
     
     // same thing for left side
     let x = (position.left + window.pageXOffset + tooltipModel.caretX - 160)
@@ -57,8 +61,9 @@ export const tooltipCallback = function(tooltipModel){
       x = (x - x) + 20;
     }
   
-    if ((tooltipEl.clientHeight + x) > window.innerWidth){
-      x = x - (window.innerWidth - (tooltipEl.clientHeight + x) - 20);
+    if ((tooltipEl.clientWidth + x) > window.innerWidth){
+      console.log("wider")
+      x = x - ((tooltipEl.clientWidth + x) - window.innerWidth) - 20;
     }
   
     // Display, position, and set styles for font
