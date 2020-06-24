@@ -1,3 +1,4 @@
+import 'bootstrap';
 import Chart from 'chart.js'
 import {merge} from 'lodash'
 import tinycolor from 'tinycolor2';
@@ -23,6 +24,7 @@ if(urlParams.has('p')){
 // Set some basic default settings for datasets
 merge(Chart.defaults, {
   global: {
+    defaultFontFamily:"'Noto Sans KR', sans-serif",
     datasets: {
       line: {
         fill: 'false',
@@ -62,15 +64,15 @@ let Timeline = new Chart(app, {
         offset: true,
         ticks:{
           min: 0,
-          fontColor: "#f1f1f1",
+          fontColor: "#ffffff",
         },
         gridLines: {
           offsetGridLines: true,
-          color: '#616161',
+          color: '#4d4d4d',
           lineWidth: 2
         },
         scaleLabel: {
-          fontColor: "#f1f1f1",
+          fontColor: "#ffffff",
         }
       },
       {
@@ -89,15 +91,14 @@ let Timeline = new Chart(app, {
         offset: true,
         gridLines: {
           lineWidth: 4,
-          color: 'rgba(181, 181, 181, 1)',
+          color: '#999999',
           zeroLineWidth: 4,
-          zeroLineColor: 'rgba(181, 181, 181, 1)',
+          zeroLineColor: '#999999',
           offsetGridLines: true,
           drawBorder: false,
         },
         ticks: {
           //min: 0,
-          fontFamily: 'Arial',
           fontColor: "#f1f1f1",
           fontSize: '18', // 20 works better if rotated
           // labelOffset: -20,     // Need to shift up if rotated
@@ -122,7 +123,7 @@ let Timeline = new Chart(app, {
 
     tooltips: {
       enabled: false,
-      mode: "nearest",
+      mode: "point",
       intersect:true,
       custom: eventTooltip.tooltipCallback,
     },

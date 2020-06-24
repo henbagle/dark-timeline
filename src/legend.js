@@ -37,7 +37,7 @@ export function htmlLegend(chart, callback){
     const legendItems = legendContainer.getElementsByTagName('li');
     for (let i = 0; i < legendItems.length; i += 1) {
         let childSpan= legendItems[i].getElementsByTagName('span')[0]
-        legendItems[i].addEventListener("click", callback, false);
+        legendItems[i].addEventListener("click", callback, true);
         childSpan.style.borderColor = childSpan.style.backgroundColor
         if(!chart.shownDatasets.includes(i)){
             legendItems[i].classList.add("hidden")
