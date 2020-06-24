@@ -4,7 +4,7 @@ const webpack = require("webpack");
 let config = {
     entry: {
         timeline:"./src/timeline.js",
-        index: "./src/index.js",
+        bootstrap: "./src/bootstrap.js",
         style: "./src/style.scss"
     },
     module: {
@@ -12,9 +12,15 @@ let config = {
           {
             test: /\.(js|jsx)$/,
             exclude: /node_modules/,
-            use: {
-              loader: "babel-loader"
-            }
+            use: [
+              {loader: "babel-loader"},
+              // {loader: 'exports-loader',
+              // options: {
+              //     type:"commonjs",
+              //     exports: 'bootstrap',
+              //   },
+              // },
+            ],
           },
           {
             test: /\.(scss|css)$/,
@@ -37,13 +43,21 @@ let config = {
           },
         ]
     },
+    plugins: [
+      new webpack.ProvidePlugin({
+        $: 'jquery',
+        jQuery: 'jquery',
+        'window.jQuery': 'jquery',
+        Popper: ['popper.js', 'default']
+    })
+    ],
     resolve: {
         extensions: ['*', '.js', '.jsx', '.scss']
     },
     output: {
         path: path.join(__dirname, "public/dist"),
         filename: "[name].js",
-        publicPath: "/"
+        publicPath: "/",
     }, 
     watchOptions: {
       ignored: '/node_modules/'
