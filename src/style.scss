@@ -1,13 +1,25 @@
 @import "custom";
 @import "~bootstrap/scss/bootstrap";
 
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
 html{
     margin: 0 !important;
     padding: 0 !important;
 }
 
 body{
+    font-family: 'Noto Sans KR', sans-serif;
     padding-top: 56px !important;
+}
+
+.navbar{
+    font-family: 'Merriweather', serif;
+}
+
+.navbar-brand{
+    font-weight: 900;
+    letter-spacing: 0.03rem;
 }
 
 #app{
@@ -15,22 +27,23 @@ body{
     top: 56px;
     width: 100%;
     left:0;
-    background-color: #6c6b6f;
+    background-color: #616161;
 }
 
 #chart{
-    height: calc(100vh - 56px);
-    padding-right: 7px;
-    padding-left: 0;
+    height: 700px;
 }
 
 #chartjs-tooltip{
+    font-weight: 300;
     width: 20rem;
 }
 
 #legend{
-    padding: 5px;
-    height: calc(100vh - 56px);
+    background-color: #888888;
+    border-radius: 8px 8px 13px 8px;
+    margin: 5px;
+    padding: 6px 1px 0px 13px;
     display: flex;
     transition:flex 0.3s ease-out;
     flex-flow: column nowrap;
@@ -38,27 +51,54 @@ body{
     
     #legendMeta{
         flex: 0 1 auto;
+        h4{
+            font-family: 'Merriweather', serif;
+        }
     }
     
     #legendContent{
+        font-weight: 400;
+        height: 400px;
         flex: 1 0 auto;
-        height: 91%
+    }
+}
+
+@include media-breakpoint-up(lg) {
+    #chart{
+        height: calc(100vh - 56px);
+    }
+
+    #legend{
+        border-radius: 8px 0px 0px 0px;
+        margin: 5px 0px 0px 0px;
+        height: calc(100vh - 61px);
+
+        #legendContent{
+            height: calc(100vh - 136px);
+        }
     }
 }
 
 [class="0-legend"] {
     padding: 0;
     height: 100%;
-    margin-bottom: 0;
+    margin-bottom: 0px;
     list-style: none;
     cursor: pointer;
     display: flex;
     flex-flow: column wrap;
     overflow: auto;
+    
 
     li {
         display: inline-block;
-        
+        font-size: 15px;
+        margin-bottom: 4px;
+        -webkit-user-select: none; /* Safari */        
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* IE10+/Edge */
+        user-select: none; /* Standard */
+                
         span {
             display: inline-block;
             height: 13px;
