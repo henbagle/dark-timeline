@@ -36,7 +36,19 @@ body{
 
 #chartjs-tooltip{
     font-weight: 300;
-    width: 20rem;
+    width: 15rem;
+}
+
+#ttHeader{
+    font-size: 1rem;
+}
+#ttBody{
+    font-size: 0.6rem;
+}
+
+.text-muted{
+    font-size: 0.6rem;
+    color: #bdbdbd !important
 }
 
 #legend{
@@ -51,8 +63,13 @@ body{
     
     #legendMeta{
         flex: 0 1 auto;
+        -webkit-user-select: none; /* Safari */        
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* IE10+/Edge */
+        user-select: none; /* Standard */
         h4{
             font-family: 'Merriweather', serif;
+            
         }
     }
     
@@ -61,6 +78,8 @@ body{
         height: 400px;
         flex: 1 0 auto;
     }
+
+    
 }
 
 @include media-breakpoint-up(lg) {
@@ -76,6 +95,19 @@ body{
         #legendContent{
             height: calc(100vh - 136px);
         }
+    }
+
+    #chartjs-tooltip{
+        font-weight: 300;
+        width: 20rem;
+    }
+
+    #ttBody{
+        font-size: 0.9rem;
+    }
+
+    .text-muted{
+        font-size: 0.9rem;
     }
 }
 
