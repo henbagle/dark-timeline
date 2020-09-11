@@ -203,6 +203,7 @@ class EventFormPeriod extends React.Component {   // React class for the time pe
               <option value="1">Season 1</option>
               <option value="2">Season 2</option>
               <option value="3">Season 3</option>
+              <option value="4">Alt-World</option>
           </select>
         </div>)
     }

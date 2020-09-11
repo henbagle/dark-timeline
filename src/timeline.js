@@ -134,6 +134,8 @@ let Timeline = new Chart(app, {
 //   FETCH DATA: Get all timeline information, input it into the chart 
 fetch("/timeline/"+p).then((response) => response.json()).then((result) => {
   p = result.periodN
+  console.log(p);
+  console.log(result.period);
 
   // Set scale based on period data - labels, min/max
   Timeline.options.scales.xAxes[0].labels = result.period.dates.map((val) => {
