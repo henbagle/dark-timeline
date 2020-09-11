@@ -108,9 +108,36 @@ module.exports = {
     },
     {
       name: 'Season 3',
-      date: 'June 2020',
-      timelines: ['1920', '1953', '1986', '2019', '2052'],
+      date: 'September 2020',
+      timelines: ['1888', '1921', '1954', '1987', '2020', '2053'],
       dates: [
+        {
+          date: 'November 4th',
+          episode: 'S3E2',
+        },
+        {
+          date: 'November 4th',
+          episode: 'S3E2',
+        },
+      ],
+    },
+    {
+      name: 'Alt-World',
+      date: 'November 2019',
+      timelines: ['1986', '2019', '2052'],
+      dates: [
+        {
+          date: 'November 4th',
+          episode: 'S3E1',
+        },
+        {
+          date: 'November 5th',
+          episode: 'S3E2',
+        },
+        {
+          date: 'November 6th',
+          episode: 'S3E4',
+        },
       ],
     },
 

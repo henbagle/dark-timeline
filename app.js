@@ -10,10 +10,9 @@ const methodOverride = require('method-override');
 const handlebars = require('handlebars');
 const eHandlebars = require('express-handlebars');
 const { allowInsecurePrototypeAccess } = require('@handlebars/allow-prototype-access');
+const favicon = require('serve-favicon');
 
-if (process.env.NODE_ENV !== 'production') {
-  dotEnv.config();
-}
+dotEnv.config();
 
 // ////////////////
 // ROUTES
@@ -31,6 +30,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 app.set('view engine', 'hbs');
 app.use(methodOverride('_method'));
+app.use(favicon(__dirname + '/public/favicon.ico'));
 
 app.engine('hbs', eHandlebars({
   layoutsDir: `${__dirname}/views/layouts`,

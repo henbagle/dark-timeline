@@ -13,11 +13,15 @@ router.get("/faq", (req, res) => {
   res.render("faq", {layout: 'chart'})
 })
 
+router.get("/familyTree", (req, res) => {
+  res.render("familyTree", {layout: 'chart'})
+})
+
 // TIMELINES - JSON of EVERYTHING
 router.get('/timeline/:p', (req, res) => {
   let p = req.params.p;
-  if(p == 3){                 // Comment this if statement out when season 3 happens
-    p = '2'
+  if(p > 2){                 // Comment this if statement out when season 3 happens
+    // p = '2'
   }
   Character.find({}).populate("periods."+p+".events").exec((err, dbChar) => {
     if (err) {
